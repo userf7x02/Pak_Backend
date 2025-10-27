@@ -14,6 +14,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug": "nodemon app.js"
+    "debug": "nodemon app.js",
+    "start": "node app.js"
   }
 }
