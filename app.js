@@ -13,7 +13,8 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://pakclassified.onrender.com",
-      "https://pakclassified.vercel.app" // agar future mein frontend deploy ho to
+       "https://pakclassified.vercel.app",
+      "https://pak-classified-02.vercel.app" // agar future mein frontend deploy ho to
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
