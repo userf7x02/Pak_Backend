@@ -7,12 +7,25 @@ require("dotenv").config();
 const connecting = require("./common/connect");
 const multer = require("multer");
 
-// ✅ Proper CORS setup (no * with credentials)
-app.use(cors({
-  origin: ["http://localhost:5173", "https://pakclassified.onrender.com"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://pakclassified.onrender.com",
+      "https://pakclassified.vercel.app" // agar future mein frontend deploy ho to
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
+
+
+app.use(cors());
+
+
+
+
 
 
 
