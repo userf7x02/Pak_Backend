@@ -9,9 +9,11 @@ const multer = require("multer");
 
 // ✅ Proper CORS setup (no * with credentials)
 app.use(cors({
-  origin: true, // Dynamically allow all origins
-  credentials: true,
+  origin: ["http://localhost:5173", "https://pakclassified.onrender.com"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
 }));
+
 
 
 // ✅ Middlewares (must be before routes)
