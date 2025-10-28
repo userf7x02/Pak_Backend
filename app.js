@@ -29,10 +29,14 @@ app.use(express.urlencoded({ extended: true }));
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// ✅ Database connect
-connecting();
+// ✅ Database connect - Make it async
+connecting().then(() => {
+  console.log("Database connection attempted");
+}).catch(err => {
+  console.log("Database connection failed:", err.message);
+});
 
-// ✅ ROUTES IMPORT KAREIN - YEH LINES ADD KAREN
+// ✅ ROUTES IMPORT KAREIN
 const createCategory = require("./routes/category");
 const createStatus = require("./routes/status");
 const createArea = require("./routes/city_area");
@@ -65,6 +69,17 @@ app.use("/createuser", updateUserRouter);
 // ✅ Routes
 app.get('/', (req, res) => {
   res.send('Backend Running Successfully on Render!');
+});
+
+// ✅ ADD THIS TEST ROUTE
+app.get('/test-db', async (req, res) => {
+    try {
+        const Category = require("./models/Category");
+        const categories = await Category.find().limit(1);
+        res.json({ success: true, categories: categories.length });
+    } catch (error) {
+        res.json({ success: false, error: error.message });
+    }
 });
 
 // ✅ FIX: Form route with memory storage
