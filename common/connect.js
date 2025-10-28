@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 
 async function connecting() {
     try {
+        // Remove deprecated options for Vercel
         await mongoose.connect(process.env.URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 30000, // 30 seconds
-            socketTimeoutMS: 45000, // 45 seconds
+            serverSelectionTimeoutMS: 30000,
+            socketTimeoutMS: 45000,
+            maxPoolSize: 5, // Important for Vercel
+            bufferCommands: false, // Important for serverless
         });
         console.log("✅ MongoDB Connected Successfully");
     } catch (e) {
