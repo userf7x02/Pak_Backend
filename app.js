@@ -71,6 +71,14 @@ app.get('/', (req, res) => {
   res.send('Backend Running Successfully on Render!');
 });
 
+app.get('/test-simple', async (req, res) => {
+    try {
+        res.json({ success: true, message: "Server working", timestamp: new Date() });
+    } catch (error) {
+        res.json({ success: false, error: error.message });
+    }
+});
+
 // ✅ ADD THIS TEST ROUTE
 app.get('/test-db', async (req, res) => {
     try {
