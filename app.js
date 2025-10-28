@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 const path = require("path");
 const cors = require("cors");
+
+// ✅ TOP LEVEL IMPORTS - Vercel compatible
 const Advertisement_Model = require("./models/Advertisement");
+// const Category = require("./models/Category");
+
 require("dotenv").config();
 const connecting = require("./common/connect");
 const multer = require("multer");
@@ -79,7 +83,7 @@ app.get('/test-simple', async (req, res) => {
     }
 });
 
-// ✅ ADD THIS TEST ROUTE
+// ✅ FIXED TEST ROUTE - Dynamic import
 app.get('/test-db', async (req, res) => {
     try {
         const Category = require("./models/Category");
