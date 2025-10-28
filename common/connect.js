@@ -2,16 +2,23 @@ const mongoose = require("mongoose");
 
 async function connecting() {
     try {
-        // Remove deprecated options for Vercel
-        await mongoose.connect(process.env.URI, {
-            serverSelectionTimeoutMS: 30000,
+        // Vercel serverless optimized connection
+        const conn = await mongoose.connect(process.env.URI, {
+            serverSelectionTimeoutMS: 10000,
             socketTimeoutMS: 45000,
-            maxPoolSize: 5, // Important for Vercel
-            bufferCommands: false, // Important for serverless
+            maxPoolSize: 1,
+            minPoolSize: 0,
+            maxIdleTimeMS: 30000,
+            bufferCommands: false
         });
-        console.log("✅ MongoDB Connected Successfully");
-    } catch (e) {
-        console.log("❌ MongoDB Connection Error:", e.message);
+        
+        console.log("✅ MongoDB Connected Successfully to:", conn.connection.host);
+        return conn;
+        
+    } catch (error) {
+        console.log("❌ MongoDB Connection Failed:", error.message);
+        // Don't throw, let server start without DB
+        return null;
     }
 }
 
