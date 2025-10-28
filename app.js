@@ -32,12 +32,40 @@ const upload = multer({ storage });
 // ✅ Database connect
 connecting();
 
+// ✅ ROUTES IMPORT KAREIN - YEH LINES ADD KAREN
+const createCategory = require("./routes/category");
+const createStatus = require("./routes/status");
+const createArea = require("./routes/city_area");
+const createCity = require("./routes/city");
+const createCountry = require("./routes/country");
+const createProvince = require("./routes/province");
+const createRole = require("./routes/role");
+const createAdvertisement = require("./routes/Advertisment");
+const signupROUTER = require("./routes/Signup");
+const loginROUTER = require("./routes/Login");
+const updateUserRouter = require("./routes/Update");
+const createAuth = require("./routes/Forgot");
+const createContact = require("./routes/Contact");
+
+// ✅ ROUTES USE KAREIN
+app.use("/createCategory", createCategory);
+app.use("/createStatus", createStatus);
+app.use("/createuser", signupROUTER);
+app.use("/createlogin", loginROUTER);
+app.use("/createArea", createArea);
+app.use("/createCity", createCity);
+app.use("/createCountry", createCountry);
+app.use("/createProvince", createProvince);
+app.use("/createRole", createRole);
+app.use("/createAdvertisement", createAdvertisement);
+app.use("/createAuth", createAuth);
+app.use("/createContact", createContact);
+app.use("/createuser", updateUserRouter);
+
 // ✅ Routes
 app.get('/', (req, res) => {
   res.send('Backend Running Successfully on Render!');
 });
-
-// ... your routes (same as before)
 
 // ✅ FIX: Form route with memory storage
 app.post("/creatform", upload.single("image"), async (req, res) => {
