@@ -2,18 +2,27 @@ const mongoose = require("mongoose");
 const Advertisement_Model = require("../models/Advertisement");
 const fs = require("fs");
 const path = require("path");
+const { uploadToCloudinary } = require("../common/cloudinary");
 // ✅ Create Advertisement
+// ✅ Create Advertisement with Cloudinary
 async function Advertisement(req, res) {
     try {
-        const { Name, Description, EndsOn, Features, Price, StartsOn, CityArea, Category } = req.body;
-        const Image = req.file ? req.file.filename : null;
+        const { Name, Description, EndsOn, Features, Price, StartsOn, CityArea, Category, userId } = req.body;
+        
+        // ✅ YEH SECTION CHANGE KARO - Cloudinary upload
+        let imageUrl = null;
+        if (req.file) {
+            imageUrl = await uploadToCloudinary(req.file);
+        } else {
+            return res.status(400).json({ message: "Please upload an image." });
+        }
 
         // Required fields check
-        if (!Name || !Description || !EndsOn || !Features || !Price || !StartsOn || !Image || !CityArea || !Category) {
+        if (!Name || !Description || !EndsOn || !Features || !Price || !StartsOn || !imageUrl || !CityArea || !Category) {
             return res.status(400).json({ message: "Please fulfill all the required fields." });
         }
 
-        // Create ad
+        // ✅ YEH LINE CHANGE KARO - Cloudinary URL save karo
         const Data = await Advertisement_Model.create({
             Name,
             Description,
@@ -22,13 +31,13 @@ async function Advertisement(req, res) {
             Price,
             StartsOn,
             CityArea: new mongoose.Types.ObjectId(CityArea),
-            Image,
+            Image: imageUrl, // ✅ YEH CHANGE - filename ki jagah URL
             Category: new mongoose.Types.ObjectId(Category),
-            userId: req.body.userId,
+            userId: new mongoose.Types.ObjectId(userId),
         });
 
         res.status(201).json({
-            message: "Advertisement created successfully",
+            message: "Advertisement created successfully with Cloudinary",
             data: Data,
         });
     } catch (e) {
@@ -95,11 +104,11 @@ const deleteAd = async (req, res) => {
         const ad = await Advertisement_Model.findById(id);
         if (!ad) return res.status(404).json({ message: "Advertisement not found" });
 
-        // Delete image from uploads
-        if (ad.Image) {
-            const imagePath = path.join(__dirname, "../uploads", ad.Image);
-            if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
-        }
+        // ✅ YEH SECTION DELETE KARO - Image delete ki zaroorat nahi
+        // if (ad.Image) {
+        //     const imagePath = path.join(__dirname, "../uploads", ad.Image);
+        //     if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
+        // }
 
         await Advertisement_Model.findByIdAndDelete(id);
         res.json({ message: "Advertisement deleted successfully" });
@@ -126,13 +135,11 @@ const updateAd = async (req, res) => {
         ad.StartsOn = StartsOn || ad.StartsOn;
         ad.EndsOn = EndsOn || ad.EndsOn;
 
-        // Update image if uploaded
+        // ✅ YEH SECTION COMPLETELY CHANGE KARO - Cloudinary upload
         if (req.file) {
-            if (ad.Image) {
-                const oldImagePath = path.join(__dirname, "../uploads", ad.Image);
-                if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
-            }
-            ad.Image = req.file.filename;
+            const newImageUrl = await uploadToCloudinary(req.file);
+            ad.Image = newImageUrl; // ✅ YEH CHANGE - filename ki jagah URL
+            // Purani image delete karne ki zaroorat nahi
         }
 
         await ad.save();

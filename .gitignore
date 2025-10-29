@@ -26,3 +26,4 @@ AppData/
 # Optional: build / dist folders (agar ho)
 dist/
 build/
+.vercel

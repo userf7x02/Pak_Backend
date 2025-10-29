@@ -1,11 +1,9 @@
-const User = require("../models/Login_Signup"); // user model
-const fs = require("fs");
-const path = require("path");
+const User = require("../models/Login_Signup");
+const { uploadToCloudinary } = require("../common/cloudinary");
 
-// Update user profile
+// Update user profile with Cloudinary
 const updateUser = async (req, res) => {
     try {
-        
         const { id } = req.params;
         const { username, email, contact } = req.body;
 
@@ -20,14 +18,11 @@ const updateUser = async (req, res) => {
         user.email = email || user.email;
         user.contact = contact || user.contact;
 
-        // Update image if uploaded
+        // ✅ Update image if uploaded to Cloudinary
         if (req.file) {
-            // Delete old image if exists
-            if (user.image && user.image.startsWith("/uploads")) {
-                const oldImagePath = path.join(__dirname, "../", user.image);
-                if (fs.existsSync(oldImagePath)) fs.unlinkSync(oldImagePath);
-            }
-            user.image = `/uploads/${req.file.filename}`;
+            const newImageUrl = await uploadToCloudinary(req.file);
+            user.image = newImageUrl; // ✅ Cloudinary URL save karo
+            // Purani image delete karne ki zaroorat nahi
         }
 
         await user.save();

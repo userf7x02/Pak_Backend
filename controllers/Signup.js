@@ -1,6 +1,6 @@
 const SIGNUP = require("../models/Login_Signup");
 const bcrypt = require("bcrypt");
-
+const { uploadToCloudinary } = require("../common/cloudinary");
 
 async function signup(req, res) {
   try {
@@ -14,8 +14,11 @@ async function signup(req, res) {
       return res.status(400).json({ success: false, message: "Please fill all required fields" });
     }
 
-    // Image path
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : "";
+    // ✅ Cloudinary upload for profile image
+    let imageUrl = null;
+    if (req.file) {
+      imageUrl = await uploadToCloudinary(req.file);
+    }
 
     // Email check
     const existingUser = await SIGNUP.findOne({ email });
@@ -31,18 +34,18 @@ async function signup(req, res) {
     // Hash password
     const hashpassword = await bcrypt.hash(password, 10);
 
-    // Save user
+    // ✅ Save user with Cloudinary URL
     const CreateUserData = await SIGNUP.create({
       username,
       email,
       password: hashpassword,
       contact,
-      image: imagePath,
+      image: imageUrl, // ✅ Cloudinary URL save karo
     });
 
     res.status(200).json({
       success: true,
-      message: "Signup successful",
+      message: "Signup successful with Cloudinary",
       user: CreateUserData,
     });
      
