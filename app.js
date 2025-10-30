@@ -1,22 +1,29 @@
 const express = require('express');
 const app = express();
 const path = require("path");
-// const cors = require("cors");
+const cors = require("cors");
 const mongoose = require('mongoose');
 
 require("dotenv").config();
 
-// ✅ MANUAL CORS - 100% GUARANTEED
+// ✅ Local + Live CORS
+app.use(cors({
+  origin: [
+    "http://localhost:5173",  // Local
+    "https://pak-classified-02-*.vercel.app"  // Live
+  ],
+  credentials: true
+}));
+
+// ✅ Manual CORS bhi rakho (backup)
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
-  
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === 'OPTIONS') return res.status(200).end();
   next();
 });
+
 // ✅ MIDDLEWARES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
