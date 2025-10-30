@@ -8,9 +8,13 @@ require("dotenv").config();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://pak-classified-02-alauiaul3-hamza-maliks-projects-598e98c2.vercel.app"
+  "https://pak-classified-02-7u2caq22s-hamza-maliks-projects-598e98c2.vercel.app",
+  "https://pak-classified-02-q6505zkx0-hamza-maliks-projects-598e98c2.vercel.app", 
+  "https://pak-classified-02-b4ah4jkgk-hamza-maliks-projects-598e98c2.vercel.app",
+  "https://pak-classified-02.vercel.app"
 ];
 
+// ✅ SINGLE CORS MIDDLEWARE
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -24,13 +28,12 @@ app.use(cors({
   credentials: true
 }));
 
-
-// ✅ MIDDLEWARS - CORS KE BAAAD
+// ✅ MIDDLEWARES
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// ✅ BASIC ROUTES - MIDDLEWARS KE BAAAD
+// ✅ BASIC ROUTES
 app.get('/', (req, res) => {
   res.send('✅ Backend Running Successfully on Vercel!');
 });
@@ -83,7 +86,7 @@ app.get('/health', async (req, res) => {
     }
 });
 
-// ✅ MULTER SETUP - MIDDLEWARS KE BAAAD
+// ✅ MULTER SETUP
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -109,7 +112,7 @@ connecting().then(() => {
   console.log("❌ Database connection failed:", err.message);
 });
 
-// ✅ IMPORTED ROUTES - SABSE BAAAD MEIN
+// ✅ IMPORTED ROUTES
 const createCategory = require("./routes/category");
 const createStatus = require("./routes/status");
 const createArea = require("./routes/city_area");
@@ -171,7 +174,7 @@ app.post("/creatform", upload.single("image"), async (req, res) => {
   }
 });
 
-// ✅ ERROR HANDLERS - SABSE BAAAD MEIN
+// ✅ ERROR HANDLERS
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
