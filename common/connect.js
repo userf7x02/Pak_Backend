@@ -3,12 +3,18 @@ const mongoose = require("mongoose");
 async function connecting() {
     try {
         console.log("🔄 Connecting to MongoDB...");
-        console.log("Connection URI Present:", process.env.URI ? "Yes" : "No");
         
-        // ✅ UPDATED: Remove deprecated options
-        await mongoose.connect(process.env.URI, {
-            serverSelectionTimeoutMS: 30000, // 30 seconds
-            socketTimeoutMS: 45000, // 45 seconds
+        // ✅ USE MONGODB_URI INSTEAD OF URI
+        const MONGODB_URI = process.env.MONGODB_URI;
+        console.log("MONGODB_URI Present:", MONGODB_URI ? "Yes" : "No");
+        
+        if (!MONGODB_URI) {
+            throw new Error("MONGODB_URI environment variable is missing");
+        }
+
+        await mongoose.connect(MONGODB_URI, {
+            serverSelectionTimeoutMS: 30000,
+            socketTimeoutMS: 45000,
             maxPoolSize: 10,
         });
         
