@@ -6,27 +6,18 @@ const mongoose = require('mongoose');
 
 require("dotenv").config();
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://pak-classified-02-7u2caq22s-hamza-maliks-projects-598e98c2.vercel.app",
-  "https://pak-classified-02-q6505zkx0-hamza-maliks-projects-598e98c2.vercel.app", 
-  "https://pak-classified-02-*.vercel.app", 
-  "https://pak-classified-02-b4ah4jkgk-hamza-maliks-projects-598e98c2.vercel.app",
-  "https://pak-classified-02.vercel.app",
-  "https://pak-classified-02-1m5f5nn6b-hamza-maliks-projects-598e98c2.vercel.app", 
-];
-
-// ✅ SINGLE CORS MIDDLEWARE
+// ✅ Simple CORS fix - yeh use karo
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: [
+    "http://localhost:5173",
+    "https://pak-classified-02.vercel.app",
+    "https://pak-classified-02-7u2caq22s-hamza-maliks-projects-598e98c2.vercel.app",
+    "https://pak-classified-02-q6505zkx0-hamza-maliks-projects-598e98c2.vercel.app", 
+    "https://pak-classified-02-b4ah4jkgk-hamza-maliks-projects-598e98c2.vercel.app",
+    "https://pak-classified-02-1m5f5nn6b-hamza-maliks-projects-598e98c2.vercel.app",
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "Content-Length", "X-Requested-With"],
   credentials: true
 }));
 
