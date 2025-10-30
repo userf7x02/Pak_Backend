@@ -12,7 +12,8 @@ const allowedOrigins = [
   "https://pak-classified-02-q6505zkx0-hamza-maliks-projects-598e98c2.vercel.app", 
   "https://pak-classified-02-*.vercel.app", 
   "https://pak-classified-02-b4ah4jkgk-hamza-maliks-projects-598e98c2.vercel.app",
-  "https://pak-classified-02.vercel.app"
+  "https://pak-classified-02.vercel.app",
+  "https://pak-classified-02-1m5f5nn6b-hamza-maliks-projects-598e98c2.vercel.app", 
 ];
 
 // ✅ SINGLE CORS MIDDLEWARE
