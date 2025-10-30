@@ -8,10 +8,7 @@ require("dotenv").config();
 
 // ✅ Local + Live CORS
 app.use(cors({
-  origin: [
-    "http://localhost:5173",  // Local
-    "https://pak-classified-02-*.vercel.app"  // Live
-  ],
+  origin: "*",
   credentials: true
 }));
 
