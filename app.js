@@ -10,6 +10,7 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://pak-classified-02-7u2caq22s-hamza-maliks-projects-598e98c2.vercel.app",
   "https://pak-classified-02-q6505zkx0-hamza-maliks-projects-598e98c2.vercel.app", 
+  "https://pak-classified-02-*.vercel.app", 
   "https://pak-classified-02-b4ah4jkgk-hamza-maliks-projects-598e98c2.vercel.app",
   "https://pak-classified-02.vercel.app"
 ];
