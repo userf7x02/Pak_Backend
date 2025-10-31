@@ -32,5 +32,4 @@ const uploadToCloudinary = async (file) => {
     throw new Error('Cloudinary upload failed: ' + error.message);
   }
 };
-
 module.exports = { cloudinary, uploadToCloudinary };
